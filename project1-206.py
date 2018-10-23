@@ -32,6 +32,7 @@ def getData(file):
 		init_data["Class"] = c_year
 		init_data["DOB"]= dob
 		dict_list.append(init_data)
+	dict_list.remove(dict_list[0])
 	return dict_list
 	
 	
@@ -66,7 +67,7 @@ def classSizes(data):
 		if student ["Class"] == "Senior":
 			list_students[0][1] = list_students[0][1] + 1
 		elif student["Class"] == "Junior":
-			list_students[1][1] = list_students[1][1] +1
+			list_students[1][1] = list_students[1][1] + 1
 		elif student["Class"] == "Sophomore":
 			list_students[2][1] = list_students[2][1] + 1
 		elif student["Class"] == "Freshman":
@@ -86,7 +87,17 @@ def classSizes(data):
 	pass
 
 
-"""def findMonth(a):
+def findMonth(a):
+	m_dict = {}
+	for x in a:
+		student_month = x['DOB'].split('/')[0]
+		if student_month not in m_dict:
+			m_dict[student_month] = 1
+		else:
+			m_dict[student_month] = m_dict[student_month] + 1
+	common = sorted(m_dict, key=lambda l: m_dict[l], reverse=True)
+	common_int = int(common[0])
+	return common_int
 # Find the most common birth month form this data
 # Input: list of dictionaries
 # Output: Return the month (1-12) that had the most births in the data
@@ -94,6 +105,13 @@ def classSizes(data):
 	pass
 
 def mySortPrint(a,col,fileName):
+	sorted_list = sorted(a, key=lambda l:l[col])
+	with open('results.csv', 'w') as look_for:
+		for x in sorted_list:
+			first = x["First"]
+			last = x["Last"]
+			email = x["Email"]
+			outfile.write(first + "," + "last" + "," + email + '\n')
 #Similar to mySort, but instead of returning single
 #Student, the sorted data is saved to a csv file.
 # as fist,last,email
@@ -103,13 +121,20 @@ def mySortPrint(a,col,fileName):
 	pass
 
 def findAge(a):
+	current_date = 2018
+	total = 0
+	for x in a:
+		date_of_birth = x["DOB"]
+		split_dob = date_of_birth.split('/')
+		total = total + int(split_dob[2])
+	avg_year_born = total/len(a)
+	return int(current_date - avg_year_born)
+	
 # def findAge(a):
 # Input: list of dictionaries
 # Output: Return the average age of the students and round that age to the nearest
 # integer.  You will need to work with the DOB and the current date to find the current
 # age in years.
-
-	pass
 
 
 ################################################################
@@ -125,7 +150,7 @@ def test(got, expected, pts):
   else:
     print (" XX ", end=" ")
   print("Got: ",got, "Expected: ",expected)
-  return score
+  return score 
 
 
 # Provided main() calls the above functions with interesting inputs, using test() to check if each result is correct or not.
@@ -133,7 +158,7 @@ def main():
 	total = 0
 	print("Read in Test data and store as a list of dictionaries")
 	data = getData('P1DataA.csv')
-	data2 = getData('P1DataB.csv')
+	data2 = getData('P1DataB2.csv')
 	total += test(type(data),type([]),50)
 
 	print()
@@ -170,10 +195,8 @@ def main():
 
 # Standard boilerplate to call the main() function that tests all your code
 if __name__ == '__main__':
-    main()"""
-#print(getData("P1DataA"))
+    main()
 
-#getData("P1DataA.csv")
-#print(mySort(getData("P1DataA.csv"), "First"))
-print(classSizes(getData("P1DataA.csv")))
-inFile2.close()
+
+
+
